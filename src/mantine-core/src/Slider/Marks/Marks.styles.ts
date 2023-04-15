@@ -9,9 +9,8 @@ interface MarksStyles {
 export default createStyles((theme, { color, disabled }: MarksStyles, { size }) => ({
   markWrapper: {
     position: 'absolute',
-    top: `calc(${rem(getSize({ sizes, size }))} / 2)`,
+    top: 0,
     zIndex: 2,
-    height: 0,
   },
 
   mark: {
@@ -24,7 +23,6 @@ export default createStyles((theme, { color, disabled }: MarksStyles, { size }) 
     borderRadius: 1000,
     transform: `translateX(calc(-${getSize({ sizes, size })} / 2))`,
     backgroundColor: theme.white,
-    pointerEvents: 'none',
   },
 
   markFilled: {
@@ -36,11 +34,10 @@ export default createStyles((theme, { color, disabled }: MarksStyles, { size }) 
   },
 
   markLabel: {
-    transform: `translate(-50%, calc(${theme.spacing.xs} / 2))`,
+    transform: 'translate(-50%, 0)',
     fontSize: theme.fontSizes.sm,
     color: theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[6],
+    marginTop: `calc(${theme.spacing.xs} / 2)`,
     whiteSpace: 'nowrap',
-    cursor: 'pointer',
-    userSelect: 'none',
   },
 }));

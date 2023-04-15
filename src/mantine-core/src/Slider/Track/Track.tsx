@@ -20,10 +20,11 @@ export interface TrackProps extends DefaultProps<TrackStylesNames> {
   value: number;
   children: React.ReactNode;
   onChange(value: number): void;
+  onMouseEnter?(event?: React.MouseEvent<HTMLDivElement>): void;
+  onMouseLeave?(event?: React.MouseEvent<HTMLDivElement>): void;
   disabled: boolean;
   inverted?: boolean;
   variant: string;
-  containerProps?: React.PropsWithRef<React.ComponentProps<'div'>>;
 }
 
 export function Track({
@@ -35,12 +36,13 @@ export function Track({
   radius,
   children,
   offset,
+  onMouseLeave,
+  onMouseEnter,
   disabled,
   marksOffset,
   unstyled,
   inverted,
   variant,
-  containerProps,
   ...others
 }: TrackProps) {
   const { classes } = useStyles(
@@ -49,20 +51,16 @@ export function Track({
   );
 
   return (
-    <>
-      <div className={classes.trackContainer} {...containerProps}>
-        <div className={classes.track}>
-          <Box
-            className={classes.bar}
-            sx={{
-              left: `calc(${offset}% - ${getSize({ size, sizes })})`,
-              width: `calc(${filled}% + ${getSize({ size, sizes })})`,
-            }}
-          />
+    <div className={classes.track} onMouseLeave={onMouseLeave} onMouseEnter={onMouseEnter}>
+      <Box
+        className={classes.bar}
+        sx={{
+          left: `calc(${offset}% - ${getSize({ size, sizes })})`,
+          width: `calc(${filled}% + ${getSize({ size, sizes })})`,
+        }}
+      />
 
-          {children}
-        </div>
-      </div>
+      {children}
 
       <Marks
         {...others}
@@ -76,7 +74,7 @@ export function Track({
         inverted={inverted}
         variant={variant}
       />
-    </>
+    </div>
   );
 }
 

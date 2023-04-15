@@ -15,8 +15,7 @@ export interface ThumbProps extends DefaultProps<ThumbStylesNames> {
   color: MantineColor;
   size: MantineNumberSize;
   label: React.ReactNode;
-  onKeyDownCapture?(event: React.KeyboardEvent<HTMLDivElement>): void;
-  onMouseDown?(event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>): void;
+  onMouseDown(event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>): void;
   labelTransition?: MantineTransition;
   labelTransitionDuration?: number;
   labelTransitionTimingFunction?: string;
@@ -42,7 +41,6 @@ export const Thumb = forwardRef<HTMLDivElement, ThumbProps>(
       label,
       dragging,
       onMouseDown,
-      onKeyDownCapture,
       color,
       classNames,
       styles,
@@ -69,8 +67,10 @@ export const Thumb = forwardRef<HTMLDivElement, ThumbProps>(
       { name: 'Slider', classNames, styles, unstyled, variant, size }
     );
     const [focused, setFocused] = useState(false);
+    const [hovered, setHovered] = useState(false);
 
-    const isVisible = labelAlwaysOn || dragging || focused || (showLabelOnHover && isHovered);
+    const isVisible =
+      labelAlwaysOn || dragging || focused || (showLabelOnHover && (isHovered || hovered));
 
     return (
       <Box<'div'>
@@ -92,7 +92,8 @@ export const Thumb = forwardRef<HTMLDivElement, ThumbProps>(
         }}
         onTouchStart={onMouseDown}
         onMouseDown={onMouseDown}
-        onKeyDownCapture={onKeyDownCapture}
+        onMouseEnter={showLabelOnHover ? () => setHovered(true) : undefined}
+        onMouseLeave={showLabelOnHover ? () => setHovered(false) : undefined}
         onClick={(event) => event.stopPropagation()}
         style={{ [theme.dir === 'rtl' ? 'right' : 'left']: `${position}%` }}
       >

@@ -2,7 +2,6 @@ import type { SliderStylesNames } from '@mantine/core';
 
 export const Slider: Record<SliderStylesNames, string> = {
   root: 'Root element',
-  trackContainer: 'Wrapper around track, handles drag events',
   track: 'Track element, contains all other elements',
   bar: 'Filled part of the track',
   thumb: 'Main control',

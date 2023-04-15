@@ -1,5 +1,5 @@
 import React, { forwardRef, useRef, useState, useCallback } from 'react';
-import { useMove, useUncontrolled, clamp, useMergedRef } from '@mantine/hooks';
+import { useMergedRef, useMove, useUncontrolled, clamp } from '@mantine/hooks';
 import {
   DefaultProps,
   MantineColor,
@@ -163,7 +163,6 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
   });
 
   const valueRef = useRef(_value);
-  const root = useRef<HTMLDivElement>();
   const thumb = useRef<HTMLDivElement>();
   const position = getPosition({ value: _value, min, max });
   const scaledValue = scale(_value);
@@ -185,6 +184,12 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
     { onScrubEnd: () => onChangeEnd?.(valueRef.current) },
     theme.dir
   );
+
+  const handleThumbMouseDown = (
+    event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
+  ) => {
+    event.stopPropagation();
+  };
 
   const handleTrackKeydownCapture = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (!disabled) {
@@ -257,10 +262,10 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
   return (
     <SliderRoot
       {...others}
-      ref={useMergedRef(ref, root)}
-      onKeyDownCapture={handleTrackKeydownCapture}
-      onMouseDownCapture={() => root.current?.focus()}
       size={size}
+      ref={useMergedRef(container, ref)}
+      onKeyDownCapture={handleTrackKeydownCapture}
+      onMouseDownCapture={() => container.current?.focus()}
       classNames={classNames}
       styles={styles}
       disabled={disabled}
@@ -279,16 +284,13 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
         max={max}
         value={scaledValue}
         onChange={setValue}
+        onMouseEnter={showLabelOnHover ? () => setHovered(true) : undefined}
+        onMouseLeave={showLabelOnHover ? () => setHovered(false) : undefined}
         classNames={classNames}
         styles={styles}
         disabled={disabled}
         unstyled={unstyled}
         variant={variant}
-        containerProps={{
-          ref: container,
-          onMouseEnter: showLabelOnHover ? () => setHovered(true) : undefined,
-          onMouseLeave: showLabelOnHover ? () => setHovered(false) : undefined,
-        }}
       >
         <Thumb
           max={max}
@@ -300,6 +302,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
           size={size}
           label={_label}
           ref={thumb}
+          onMouseDown={handleThumbMouseDown}
           labelTransition={labelTransition}
           labelTransitionDuration={labelTransitionDuration}
           labelTransitionTimingFunction={labelTransitionTimingFunction}

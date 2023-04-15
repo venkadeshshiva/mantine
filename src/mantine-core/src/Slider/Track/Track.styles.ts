@@ -10,14 +10,6 @@ interface TrackStyles {
 
 export default createStyles(
   (theme, { radius, color, disabled, inverted }: TrackStyles, { size }) => ({
-    trackContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      width: 'calc(100% + 1rem)',
-      height: '100%',
-      cursor: 'pointer',
-    },
-
     track: {
       position: 'relative',
       height: getSize({ sizes, size }),
