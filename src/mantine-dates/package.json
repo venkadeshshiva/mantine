@@ -29,8 +29,8 @@
     "picker"
   ],
   "peerDependencies": {
-    "@mantine/core": "6.0.20",
-    "@mantine/hooks": "6.0.20",
+    "@mantine/core": "^6.0.20",
+    "@mantine/hooks": "^6.0.20",
     "dayjs": ">=1.0.0",
     "react": ">=16.8.0"
   },
